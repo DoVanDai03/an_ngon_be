@@ -22,7 +22,7 @@ export class User {
   @Column()
   vai_tro: string;
 
-  @Column()
+  @Column({ nullable: true })
   so_dien_thoai: string;
 
   @Column()
