@@ -13,3 +13,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id              Int      @id @default(autoincrement())
+  ho_ten          String
+  email           String   @unique
+  mat_khau        String
+  vai_tro         String   @default("user")
+  so_dien_thoai   String?
+  avatar_url      String   @default("")
+  email_verified  Boolean  @default(false)
+  email_token     String?
+  token_expires   DateTime?
+  ngay_tao        DateTime @default(now())
+  ngay_cap_nhat   DateTime @updatedAt
+}

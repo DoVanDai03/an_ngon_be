@@ -3,7 +3,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
+import { UserStatus } from '../enums/user-status.enum';
 
 @Entity('users') // tên bảng trong MySQL
 export class User {
@@ -13,7 +15,7 @@ export class User {
   @Column()
   ho_ten: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -28,6 +30,25 @@ export class User {
   @Column()
   avatar_url: string;
 
+  @Column({ default: false })
+  email_verified: boolean;
+
+  @Column({ nullable: true })
+  email_token: string;
+
+  @Column({ nullable: true })
+  token_expires: Date;
+
+  @Column({ 
+    type: 'enum',
+    enum: ['inactive', 'active', 'blocked'],
+    default: 'inactive'
+  })
+  status: string;
+
   @CreateDateColumn({ type: 'datetime' })
   ngay_tao: Date;
+
+  @UpdateDateColumn({ type: 'datetime' })
+  ngay_cap_nhat: Date;
 }
