@@ -9,10 +9,15 @@ export class EmailService {
     private configService: ConfigService,
   ) {}
 
-  async sendVerificationEmail(email: string, token: string, hoTen: string) {
-    const verificationUrl = `${this.configService.get(
-      'FRONTEND_URL',
-    )}/user/verify-email?token=${token}`;
+  async sendVerificationEmail(
+    email: string,
+    token: string,
+    hoTen: string,
+    accountType: 'user' | 'teacher' | 'restaurant' = 'user',
+  ) {
+    const baseUrl = this.configService.get('FRONTEND_URL');
+    const pathSegment = accountType === 'teacher' ? 'teacher' : accountType === 'restaurant' ? 'restaurant' : 'user';
+    const verificationUrl = `${baseUrl}/${pathSegment}/verify-email?token=${token}`;
 
     await this.mailerService.sendMail({
       to: email,
@@ -25,8 +30,14 @@ export class EmailService {
     });
   }
 
-  async sendWelcomeEmail(email: string, hoTen: string) {
-    const loginUrl = `${this.configService.get('FRONTEND_URL')}/user/login`;
+  async sendWelcomeEmail(
+    email: string,
+    hoTen: string,
+    accountType: 'user' | 'teacher' | 'restaurant' = 'user',
+  ) {
+    const baseUrl = this.configService.get('FRONTEND_URL');
+    const pathSegment = accountType === 'teacher' ? 'teacher' : accountType === 'restaurant' ? 'restaurant' : 'user';
+    const loginUrl = `${baseUrl}/${pathSegment}/login`;
 
     await this.mailerService.sendMail({
       to: email,
